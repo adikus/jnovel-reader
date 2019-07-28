@@ -1,7 +1,7 @@
 export default {
     template: `
     <nav class="bg-blue-700">
-        <div class="container mx-auto flex items-center justify-between flex-wrap py-4">
+        <div class="container mx-auto flex items-center justify-between flex-wrap px-2 py-4">
             <router-link to="/series" class="flex items-center flex-shrink-0 text-white mr-6">
                 <span class="font-serif leading-none text-4xl mr-4">J</span>
                 <span class="font-semibold text-xl tracking-tight">J-Novel Unofficial Reader App</span>
