@@ -1,0 +1,16 @@
+#part-data h1 {
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+#part-data p {
+    margin-bottom: 0.5em;
+}
+
+#part-data p.centerp {
+    text-align: center;
+}
+
+#part-data img {
+    margin: 1em auto;
+}

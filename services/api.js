@@ -9,6 +9,18 @@ apiAxiosInstance.interceptors.request.use((config) => {
 
 export default {
     loadSeries() {
-        return apiAxiosInstance.get('https://api.j-novel.club/api/series')
+        return apiAxiosInstance.get('https://api.j-novel.club/api/series');
+    },
+
+    loadSerieParts(serieId) {
+        return apiAxiosInstance.get(`https://api.j-novel.club/api/volumes?filter[where][serieId]=${serieId}&filter[include][parts]`);
+    },
+
+    loadPartData(partId) {
+        return apiAxiosInstance.get(`https://api.j-novel.club/api/parts/${partId}/partData`);
+    },
+
+    loadPart(partId) {
+        return apiAxiosInstance.get(`https://api.j-novel.club/api/parts/findOne?filter={"where":{"id":"${partId}"}}`);
     }
 }

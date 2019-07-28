@@ -1,12 +1,14 @@
 import Navigation from "./components/Navigation.js"
 
 import Feed from "./pages/Feed.js";
-import Series from "./pages/Series.js";
+import Part from "./pages/Part.js";
+import Series from "./pages/Series.js"
 
 import api from "./services/api.js"
 
 const routes = [
     { path: '/series', component: Series },
+    { path: '/series/:serieId/part/:id', component: Part },
     { path: '/feed', component: Feed }
 ];
 
