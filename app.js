@@ -5,6 +5,7 @@ import Part from "./pages/Part.js";
 import Series from "./pages/Series.js"
 
 import api from "./services/api.js"
+import sharedStore from "./services/sharedStore.js";
 
 const routes = [
     { path: '/series', component: Series },
@@ -21,7 +22,8 @@ new Vue({
         Navigation
     },
     data: {
-        api: api
+        api: api,
+        sharedStore
     },
     router,
     created() {

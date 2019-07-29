@@ -22,5 +22,9 @@ export default {
 
     loadPart(partId) {
         return apiAxiosInstance.get(`https://api.j-novel.club/api/parts/findOne?filter={"where":{"id":"${partId}"}}`);
+    },
+
+    signIn(email, password) {
+        return apiAxiosInstance.post(`https://api.j-novel.club/api/users/login?include=user`, {email, password})
     }
 }
