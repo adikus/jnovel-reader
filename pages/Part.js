@@ -35,8 +35,8 @@ export default {
         } catch(error) {
             if(error.response.data.error.message === 'You cannot access this content') {
                 this.$root.sharedStore.setAlert('You must sign in to access this part');
-                this.showSignInForm = true;
             }
+            this.showSignInForm = true;
         }
     },
     methods: {
