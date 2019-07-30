@@ -19,6 +19,7 @@ export default {
         }
     },
     async created() {
+        this.$root.sharedStore.hideAlert();
         let partId = this.$route.params.id;
 
         if(partId === "latest") {

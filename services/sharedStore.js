@@ -1,6 +1,8 @@
 export default {
     alert: null,
 
+    user: {},
+
     partSeriesMap: {},
     partVolumeMap: {},
     volumeSeriesMap: {},
@@ -17,6 +19,12 @@ export default {
         localStorage.setItem('authExpiresAt', user.auth.authExpiresAt);
         localStorage.setItem('userId', user.userId);
     },
+    signOut() {
+        Vue.set(this.user, 'auth', {});
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authExpiresAt');
+        localStorage.removeItem('userId');
+    },
     retrieveUser() {
         this.user = {
             auth: {
@@ -25,11 +33,6 @@ export default {
             },
             userId: localStorage.userId
         }
-    },
-    isUserAuthValid() {
-        let now = new Date();
-        return this.user && this.user.auth && this.user.auth.authToken && this.user.auth.authExpiresAt &&
-            new Date(this.user.auth.authExpiresAt).getTime() > now.getTime();
     },
     setUserDetails(userDetails) {
         this.user.username = userDetails.username;

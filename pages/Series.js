@@ -26,11 +26,14 @@ export default {
     },
     async created() {
         this.filter = this.$route.params.filter || 'all';
+        this.$root.sharedStore.hideAlert();
 
         let response = await this.$root.api.loadSeries();
         this.series.push.apply(this.series, response.data);
 
-        if(this.$root.sharedStore.isUserAuthValid()){
+        console.log(this.$root.isUserAuthValid);
+
+        if(this.$root.isUserAuthValid){
             let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
             this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
             await this.$root.readingList.updateFromUserDetails(this.series);

@@ -22,6 +22,9 @@ export default {
                     <router-link to="/coming-up" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4">
                         Coming Up
                     </router-link>
+                    <div v-show="signedIn" @click="signOut" class="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4 cursor-pointer">
+                        Sign out
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,9 +35,17 @@ export default {
             menuItemsVisible: false
         }
     },
+    computed: {
+        signedIn() {
+            return this.$root.isUserAuthValid;
+        }
+    },
     methods: {
         toggleMenuItems() {
             this.menuItemsVisible = !this.menuItemsVisible;
+        },
+        signOut() {
+            this.$root.sharedStore.signOut();
         }
     }
 }

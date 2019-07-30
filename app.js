@@ -35,5 +35,13 @@ new Vue({
         if(this.$route.path === '/') {
             router.push('/series');
         }
+    },
+    computed: {
+        isUserAuthValid() {
+            let now = new Date();
+            return this.sharedStore.user && this.sharedStore.user.auth &&
+                this.sharedStore.user.auth.authToken && this.sharedStore.user.auth.authExpiresAt &&
+                new Date(this.sharedStore.user.auth.authExpiresAt).getTime() > now.getTime();
+        },
     }
 }).$mount('#app');
