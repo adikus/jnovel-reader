@@ -11,6 +11,8 @@ export default {
             <router-link to="/series/reading-list" class="border-b-4 hover:border-blue-700 px-2 mr-10" :class="{'border-transparent': !isFilteredReadingList, 'border-blue-700': isFilteredReadingList}">
                 Reading&nbsp;list
             </router-link>
+            <div class="w-full flex-grow"></div>
+            <input v-model="search" class="flex-shrink shadow appearance-none border rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" id="series-search" type="text" placeholder="Search">
         </div>
         
         <div class="flex content-center flex-wrap">
@@ -21,7 +23,8 @@ export default {
     data() {
         return {
             series: [],
-            filter: 'all'
+            filter: 'all',
+            search: ''
         }
     },
     async created() {
@@ -52,11 +55,17 @@ export default {
             return !this.filter || this.filter === 'reading-list';
         },
         filteredSeries() {
+            let filteredSeries = [];
             if(this.isFilteredAll) {
-                return this.series;
+                filteredSeries = this.series;
             } else if(this.isFilteredReadingList) {
-                return this.series.filter((serie) => this.$root.readingList.isReading(serie));
+                filteredSeries = this.series.filter((serie) => this.$root.readingList.isReading(serie));
             }
+
+            if(this.search && this.search.length > 0)
+            filteredSeries = filteredSeries.filter((serie) => serie.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+
+            return filteredSeries;
         }
     },
     components: {
