@@ -10,6 +10,7 @@ import ReadingList from "./services/ReadingList.js";
 
 const routes = [
     { path: '/series', component: Series },
+    { path: '/series/:filter', component: Series },
     { path: '/series/:serieId/part/:id', component: Part },
     { path: '/feed', component: Feed }
 ];
