@@ -26,6 +26,7 @@ export default {
                 </p>
             </div>
             <div style="background-clip: content-box" class="h-12 bg-blue-300 px-2 w-full absolute bottom-0 left-0 flex items-center justify-end">
+                <div class="bg-yellow-500 rounded px-2 py-1 font-semibold" v-show="isReading">Reading</div>
                 <router-link :to="linkToLatestPart" class="bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-4 border border-blue-300 hover:border-blue-500 rounded mx-2">
                     Go to latest part
                 </router-link>
@@ -45,6 +46,9 @@ export default {
             let attachments = this.serie.attachments;
             attachments.sort((attachA, attachB) => attachB.size - attachA.size);
             return 'https://d2dq7ifhe7bu0f.cloudfront.net/' + attachments[0].fullpath;
+        },
+        isReading() {
+            return this.$root.readingList.readSeries[this.serie.id] && this.$root.readingList.readSeries[this.serie.id].max > 0.1;
         }
     }
 }

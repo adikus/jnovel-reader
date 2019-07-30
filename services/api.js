@@ -26,5 +26,14 @@ export default {
 
     signIn(email, password) {
         return apiAxiosInstance.post(`https://api.j-novel.club/api/users/login?include=user`, {email, password})
+    },
+
+    loadUserDetails(userId) {
+        let params = {
+            filter: {
+                include: ["readParts"]
+            }
+        };
+        return apiAxiosInstance.get(`https://api.j-novel.club/api/users/${userId}`, { params });
     }
 }

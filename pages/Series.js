@@ -18,6 +18,12 @@ export default {
     async created() {
         let response = await this.$root.api.loadSeries();
         this.series.push.apply(this.series, response.data);
+
+        if(this.$root.sharedStore.isUserAuthValid()){
+            let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
+            this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
+            await this.$root.readingList.updateFromUserDetails(this.series);
+        }
     },
     components: {
         Serie

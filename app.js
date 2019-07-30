@@ -6,6 +6,7 @@ import Series from "./pages/Series.js"
 
 import api from "./services/api.js"
 import sharedStore from "./services/sharedStore.js";
+import ReadingList from "./services/ReadingList.js";
 
 const routes = [
     { path: '/series', component: Series },
@@ -22,11 +23,14 @@ new Vue({
         Navigation
     },
     data: {
-        api: api,
-        sharedStore
+        api,
+        sharedStore,
+        readingList: new ReadingList(sharedStore, api)
     },
     router,
     created() {
+        this.sharedStore.retrieveUser();
+
         if(this.$route.path === '/') {
             router.push('/series');
         }
