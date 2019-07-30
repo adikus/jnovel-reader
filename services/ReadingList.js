@@ -10,6 +10,10 @@ class ReadingList {
         this.readSeries = {};
     }
 
+    isReading(serie) {
+        return this.readSeries[serie.id] && this.readSeries[serie.id].max > 0.1;
+    }
+
     async updateFromUserDetails(series, doNotLoadMore) {
         let unknownPartIds = [];
 
