@@ -3,10 +3,6 @@ export default {
 
     user: {},
 
-    partSeriesMap: {},
-    partVolumeMap: {},
-    volumeSeriesMap: {},
-
     setAlert(message) {
         this.alert = message;
     },
@@ -37,15 +33,5 @@ export default {
     setUserDetails(userDetails) {
         this.user.username = userDetails.username;
         this.user.readParts = userDetails.readParts;
-    },
-    retrievePartMaps() {
-        if(localStorage.partSeriesMap) this.partSeriesMap = JSON.parse(localStorage.partSeriesMap);
-        if(localStorage.partVolumeMap) this.partVolumeMap = JSON.parse(localStorage.partVolumeMap);
-        if(localStorage.volumeSeriesMap) this.volumeSeriesMap = JSON.parse(localStorage.volumeSeriesMap);
-    },
-    savePartMaps() {
-        localStorage.setItem('partSeriesMap', JSON.stringify(this.partSeriesMap));
-        localStorage.setItem('partVolumeMap', JSON.stringify(this.partVolumeMap));
-        localStorage.setItem('volumeSeriesMap', JSON.stringify(this.volumeSeriesMap));
     }
 };

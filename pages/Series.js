@@ -34,12 +34,10 @@ export default {
         let response = await this.$root.api.loadSeries();
         this.series.push.apply(this.series, response.data);
 
-        console.log(this.$root.isUserAuthValid);
-
         if(this.$root.isUserAuthValid){
             let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
             this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
-            await this.$root.readingList.updateFromUserDetails(this.series);
+            await this.$root.readingList.updateFromUserDetails();
         }
     },
     watch: {

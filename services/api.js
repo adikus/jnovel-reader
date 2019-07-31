@@ -31,7 +31,7 @@ export default {
     loadUserDetails(userId) {
         let params = {
             filter: {
-                include: ["readParts"]
+                include: [{readParts: "part"}]
             }
         };
         return apiAxiosInstance.get(`https://api.j-novel.club/api/users/${userId}`, { params });
