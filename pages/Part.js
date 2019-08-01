@@ -3,11 +3,11 @@ import SignInForm from "../components/SignInForm.js"
 export default {
     template: `
     <div class="container mx-auto py-3 text-gray-700">
-        <h1 class="text-2xl px-2 border-b-2 border-blue-700 mb-4">{{part.title}}</h1>
+        <h1 class="text-2xl px-2 border-b-2 border-blue-700">{{part.title}}</h1>
         
-        <sign-in-form v-show="showSignInForm" @signed-in="loadPartData"></sign-in-form>
+        <sign-in-form v-show="showSignInForm" @signed-in="loadPartData" class="mt-4"></sign-in-form>
         
-        <div v-html="partData" id="part-data" class="px-2 bg-white"></div>
+        <div v-html="partData" id="part-data" class="px-2 py-4 bg-white"></div>
     </div>
   `,
     data() {
