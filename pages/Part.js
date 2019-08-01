@@ -7,7 +7,7 @@ export default {
         
         <sign-in-form v-show="showSignInForm" @signed-in="loadPartData"></sign-in-form>
         
-        <div v-html="partData" id="part-data" class="px-2"></div>
+        <div v-html="partData" id="part-data" class="px-2 bg-white"></div>
     </div>
   `,
     data() {

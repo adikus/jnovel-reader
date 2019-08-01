@@ -12,6 +12,16 @@ export default {
         return apiAxiosInstance.get('https://api.j-novel.club/api/series');
     },
 
+    loadLatestParts() {
+        let params = {
+            filter: {
+                limit: 500,
+                order: "launchDate DESC"
+            }
+        };
+        return apiAxiosInstance.get('https://api.j-novel.club/api/parts', { params });
+    },
+
     loadSerieParts(serieId) {
         return apiAxiosInstance.get(`https://api.j-novel.club/api/volumes?filter[where][serieId]=${serieId}&filter[include][parts]`);
     },
@@ -25,7 +35,7 @@ export default {
     },
 
     signIn(email, password) {
-        return apiAxiosInstance.post(`https://api.j-novel.club/api/users/login?include=user`, {email, password})
+        return apiAxiosInstance.post(`https://api.j-novel.club/api/users/login?include=user`, {email, password});
     },
 
     loadUserDetails(userId) {
@@ -35,5 +45,13 @@ export default {
             }
         };
         return apiAxiosInstance.get(`https://api.j-novel.club/api/users/${userId}`, { params });
+    },
+
+    updatePartCompletionStatus(userId, partId, completion) {
+        let params = {
+            partId: partId,
+            completion: completion
+        };
+        return apiAxiosInstance.post(`https://api.j-novel.club/api/users/${userId}/updateReadCompletion`, params);
     }
 }

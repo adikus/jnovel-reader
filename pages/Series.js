@@ -57,7 +57,7 @@ export default {
             if(this.isFilteredAll) {
                 filteredSeries = this.series;
             } else if(this.isFilteredReadingList) {
-                filteredSeries = this.series.filter((serie) => this.$root.readingList.isReading(serie));
+                filteredSeries = this.series.filter((serie) => this.$root.readingList.isReadingSerie(serie));
             }
 
             if(this.search && this.search.length > 0)
