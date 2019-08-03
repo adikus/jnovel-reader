@@ -62,12 +62,12 @@ export default {
             if(this.search && this.search.length > 0)
                 filteredParts = filteredParts.filter((part) => part.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
 
-            return filteredParts.slice(0, 30);
+            return filteredParts.slice(0, 51);
         }
     },
     methods: {
         async fetchParts() {
-            let response = await this.$root.api.loadLatestParts();
+            let response = await this.$root.api.loadFeed();
             this.parts = [];
             this.parts.push.apply(this.parts, response.data);
         }

@@ -17,6 +17,7 @@ export default {
                     <serie-detail-row key-name="Illustrator" :value="part.illustrator"></serie-detail-row>
                     <serie-detail-row key-name="Translator" :value="part.translator"></serie-detail-row>
                     <serie-detail-row key-name="Editor" :value="part.editor"></serie-detail-row>
+                    <serie-detail-row key-name="Released" :value="releasedAtHumanized"></serie-detail-row>
                 </div>
                 <p class="p-2 flex-grow w-2/3">
                     {{part.description}}
@@ -66,6 +67,41 @@ export default {
         },
         hasRead() {
             return this.$root.readingList.readParts[this.part.id] && this.$root.readingList.readParts[this.part.id].completion > 0.9;
+        },
+        releasedAtHumanized() {
+            let delta = Math.round((+new Date - new Date(this.part.launchDate)) / 1000);
+
+            let minute = 60;
+            let hour = minute * 60;
+            let day = hour * 24;
+            let month = day * 30;
+            let year = day * 365;
+
+            if (delta < 30) {
+                return 'just now';
+            } else if (delta < minute) {
+                return delta + ' seconds ago';
+            } else if (delta < 2 * minute) {
+                return 'a minute ago'
+            } else if (delta < hour) {
+                return Math.floor(delta / minute) + ' minutes ago';
+            } else if (Math.floor(delta / hour) === 1) {
+                return '1 hour ago'
+            } else if (delta < day) {
+                return Math.floor(delta / hour) + ' hours ago';
+            } else if (delta < day * 2) {
+                return 'yesterday';
+            } else if (delta < month) {
+                return  Math.floor(delta / day) + ' days ago';
+            } else if (Math.floor(delta / month) === 1) {
+                return '1 month ago';
+            } else if (delta < year) {
+                return  Math.floor(delta / month) + ' months ago';
+            } else if (Math.floor(delta / year) === 1) {
+                return '1 year ago';
+            } else {
+                return  Math.floor(delta / year) + ' years ago';
+            }
         }
     },
     methods: {

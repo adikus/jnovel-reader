@@ -12,10 +12,10 @@ export default {
         return apiAxiosInstance.get('https://api.j-novel.club/api/series');
     },
 
-    loadLatestParts() {
+    loadFeed() {
         let params = {
             filter: {
-                limit: 500,
+                where: { expirationDate: {gt: new Date()}, expired: false },
                 order: "launchDate DESC"
             }
         };
