@@ -3,6 +3,8 @@ export default {
 
     user: {},
 
+    preferredFilter: 'all',
+
     setAlert(message) {
         this.alert = message;
     },
@@ -33,5 +35,11 @@ export default {
     setUserDetails(userDetails) {
         this.user.username = userDetails.username;
         this.user.readParts = userDetails.readParts;
+    },
+    retrievePreferences() {
+        this.preferredFilter = localStorage.preferredFilter || this.preferredFilter;
+    },
+    savePreferences() {
+        localStorage.setItem('preferredFilter', this.preferredFilter);
     }
 };

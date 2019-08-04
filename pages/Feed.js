@@ -28,7 +28,7 @@ export default {
         }
     },
     async created() {
-        this.filter = this.$route.params.filter || 'all';
+        this.filter = this.$route.params.filter || this.$root.sharedStore.preferredFilter;
         this.$root.sharedStore.hideAlert();
 
         this.fetchParts();
@@ -41,7 +41,13 @@ export default {
     },
     watch: {
         $route(to, _from) {
-            this.filter = to.params.filter;
+            if(to.params.filter) {
+                this.$root.sharedStore.preferredFilter = to.params.filter;
+                this.$root.sharedStore.savePreferences();
+                this.filter = to.params.filter;
+            } else {
+                this.filter = this.$root.sharedStore.preferredFilter || 'all';
+            }
         }
     },
     computed: {

@@ -28,7 +28,9 @@ export default {
         }
     },
     async created() {
-        this.filter = this.$route.params.filter || 'all';
+        console.log('preferred', this.$root.sharedStore.preferredFilter);
+        this.filter = this.$route.params.filter || this.$root.sharedStore.preferredFilter;
+        console.log('filter', this.filter);
         this.$root.sharedStore.hideAlert();
 
         let response = await this.$root.api.loadSeries();
@@ -42,7 +44,13 @@ export default {
     },
     watch: {
         $route(to, _from) {
-            this.filter = to.params.filter;
+            if(to.params.filter) {
+                this.$root.sharedStore.preferredFilter = to.params.filter;
+                this.$root.sharedStore.savePreferences();
+                this.filter = to.params.filter;
+            } else {
+                this.filter = this.$root.sharedStore.preferredFilter || 'all';
+            }
         }
     },
     computed: {

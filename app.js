@@ -32,6 +32,7 @@ new Vue({
     router,
     created() {
         this.sharedStore.retrieveUser();
+        this.sharedStore.retrievePreferences();
 
         if(this.$route.path === '/') {
             router.push('/series');
