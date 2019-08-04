@@ -2,17 +2,19 @@ import SignInForm from "../components/SignInForm.js"
 
 export default {
     template: `
-    <div class="container mx-auto pt-3 text-gray-700">
+    <div class="container mx-auto pt-3 text-gray-700 flex-1 flex flex-col">
         <h1 class="text-2xl px-2 border-b-2 border-blue-700">{{part.title}}</h1>
         
-        <sign-in-form v-show="showSignInForm" @signed-in="loadPartData" class="mt-4"></sign-in-form>
+        <sign-in-form v-show="showSignInForm" @signed-in="loadPartData" class="mt-4 flex-1"></sign-in-form>
         
-        <div v-html="partData" id="part-data" class="px-2 py-4 bg-white"></div>
+        <div v-html="partData" v-show="partData" id="part-data" class="px-2 py-4 bg-white flex-1"></div>
+        
+        <div v-show="!showSignInForm && !partData" class="flex-1 w-full"></div>
         
         <footer class="w-full sticky bottom-0">
             <div 
                 class="bg-blue-700 p-4 flex" 
-                :class="{'opacity-0': !showFooter}" 
+                :class="{'opacity-0': !showFooter && partData}" 
                 @mouseover="showFooter = true" 
                 @mouseleave="showFooter = false"
                 style="transition-property: opacity; transition-duration: 200ms"
@@ -33,7 +35,7 @@ export default {
                     Next Part > 
                 </router-link>
             </div>
-            <div class="w-full bg-white" style="height: 5px">
+            <div class="w-full bg-white" style="height: 5px" v-show="partData">
                 <div class="bg-blue-700 h-full" :style="{width: (100 * progress) + '%'}"></div>
             </div>
         </footer>
@@ -86,6 +88,7 @@ export default {
     },
     methods: {
         async initPart() {
+            this.partData = "";
             this.$root.sharedStore.hideAlert();
             this.volumes = await this.loadVolumes();
 
