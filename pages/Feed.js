@@ -4,11 +4,11 @@ export default {
     template: `
     <div class="container mx-auto py-3 text-gray-700">
         <div class="border-b-2 border-blue-700 flex justify-start items-baseline mb-4">
-            <h1 class="text-2xl px-2 mr-10">Feed</h1>
-            <router-link to="/feed/all" class="border-b-4 hover:border-blue-700 px-2 mr-10" :class="{'border-transparent': !isFilteredAll, 'border-blue-700': isFilteredAll}">
+            <h1 class="text-2xl px-2 sm:mr-10">Feed</h1>
+            <router-link to="/feed/all" class="border-b-4 hover:border-blue-700 px-2 sm:mr-10" :class="{'border-transparent': !isFilteredAll, 'border-blue-700': isFilteredAll}">
                 All
             </router-link>
-            <router-link to="/feed/reading-list" class="border-b-4 hover:border-blue-700 px-2 mr-10" :class="{'border-transparent': !isFilteredReadingList, 'border-blue-700': isFilteredReadingList}">
+            <router-link to="/feed/reading-list" class="border-b-4 hover:border-blue-700 px-2 sm:mr-10" :class="{'border-transparent': !isFilteredReadingList, 'border-blue-700': isFilteredReadingList}">
                 Reading&nbsp;list
             </router-link>
             <div class="w-full flex-grow"></div>
