@@ -80,19 +80,11 @@ export default {
     methods: {
         markAsRead() {
             this.$root.api.updatePartCompletionStatus(this.$root.sharedStore.user.userId, this.part.id, 1);
-            if(this.$root.readingList.readParts[this.part.id]){
-                Vue.set(this.$root.readingList.readParts[this.part.id], 'completion', 1);
-            } else {
-                Vue.set(this.$root.readingList.readParts, this.part.id, {completion: 1, maxCompletion: 1});
-            }
+            this.$root.readingList.updateCompletion(this.part, 1);
         },
         markAsUnread() {
             this.$root.api.updatePartCompletionStatus(this.$root.sharedStore.user.userId, this.part.id, 0);
-            if(this.$root.readingList.readParts[this.part.id]){
-                Vue.set(this.$root.readingList.readParts[this.part.id], 'completion', 0);
-            } else {
-                Vue.set(this.$root.readingList.readParts, this.part.id, {completion: 0, maxCompletion: 0});
-            }
+            this.$root.readingList.updateCompletion(this.part, 0);
         }
     }
 }

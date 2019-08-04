@@ -38,21 +38,42 @@ class ReadingList {
 
     async updateFromUserDetails() {
         for(let readPart of this.sharedStore.user.readParts) {
-            Vue.set(this.readParts, readPart.partId, {completion: readPart.completion, maxCompletion: readPart.maxCompletion});
-            let volumeId = readPart.part && readPart.part.volumeId;
-            let volumeCompletion = this.readVolumes[volumeId];
-            Vue.set(this.readVolumes, volumeId, {
-                min: Math.min(readPart.completion, (volumeCompletion && volumeCompletion.min) || 1),
-                max: Math.max(readPart.completion, (volumeCompletion && volumeCompletion.max) || 0),
-            });
-            let seriesId = readPart.part && readPart.part.serieId;
-            let seriesCompletion = this.readSeries[seriesId];
-            Vue.set(this.readSeries, seriesId, {
-                min: Math.min(readPart.completion, (seriesCompletion && seriesCompletion.min) || 1),
-                max: Math.max(readPart.completion, (seriesCompletion && seriesCompletion.max) || 0),
-            });
+            this.updateCompletion(readPart.part, readPart.completion, readPart.maxCompletion);
         }
-        console.log(this);
+    }
+
+    updateCompletion(part, completion, maxCompletion) {
+        if(!part) return;
+        this.updateReadPart(part.id, completion, maxCompletion);
+        this.updateReadVolume(part.volumeId, completion);
+        this.updateReadSeries(part.serieId, completion);
+    }
+
+    updateReadPart(partId, completion, maxCompletion) {
+        if(this.readParts[partId]){
+            Vue.set(this.readParts[partId], 'completion', completion);
+            if(maxCompletion !== undefined){
+                Vue.set(this.readParts[partId], 'maxCompletion', maxCompletion);
+            }
+        } else {
+            Vue.set(this.readParts, partId, {completion: completion, maxCompletion: maxCompletion || completion});
+        }
+    }
+
+    updateReadVolume(volumeId, completion) {
+        let volumeCompletion = this.readVolumes[volumeId];
+        Vue.set(this.readVolumes, volumeId, {
+            min: Math.min(completion, (volumeCompletion && volumeCompletion.min) || 1),
+            max: Math.max(completion, (volumeCompletion && volumeCompletion.max) || 0),
+        });
+    }
+
+    updateReadSeries(serieId, completion) {
+        let seriesCompletion = this.readSeries[serieId];
+        Vue.set(this.readSeries, serieId, {
+            min: Math.min(completion, (seriesCompletion && seriesCompletion.min) || 1),
+            max: Math.max(completion, (seriesCompletion && seriesCompletion.max) || 0),
+        });
     }
 }
 
