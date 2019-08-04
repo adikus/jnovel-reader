@@ -1,4 +1,5 @@
 import Serie from "../components/Serie.js"
+import SignInForm from "../components/SignInForm.js"
 
 export default {
     template: `
@@ -15,7 +16,9 @@ export default {
             <input v-model="search" class="flex-shrink min-w-0 shadow appearance-none border rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" id="series-search" type="text" placeholder="Search">
         </div>
         
-        <div class="flex content-center flex-wrap">
+        <sign-in-form v-show="showSignInForm" @signed-in="loadReadingList" class="mt-4 flex-1"></sign-in-form>
+         
+        <div  v-show="!showSignInForm" class="flex content-center flex-wrap">
             <serie v-for="serie in filteredSeries" v-bind:key="serie.id" :serie="serie"></serie>
         </div>
     </div>
@@ -28,9 +31,7 @@ export default {
         }
     },
     async created() {
-        console.log('preferred', this.$root.sharedStore.preferredFilter);
         this.filter = this.$route.params.filter || this.$root.sharedStore.preferredFilter;
-        console.log('filter', this.filter);
         this.$root.sharedStore.hideAlert();
 
         let response = await this.$root.api.loadSeries();
@@ -54,11 +55,14 @@ export default {
         }
     },
     computed: {
+        showSignInForm() {
+            return this.filter === 'reading-list' && !this.$root.isUserAuthValid;
+        },
         isFilteredAll() {
-            return !this.filter || this.filter === 'all';
+            return this.filter === 'all';
         },
         isFilteredReadingList() {
-            return !this.filter || this.filter === 'reading-list';
+            return this.filter === 'reading-list';
         },
         filteredSeries() {
             let filteredSeries = [];
@@ -74,7 +78,14 @@ export default {
             return filteredSeries;
         }
     },
+    methods: {
+        async loadReadingList() {
+            let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
+            this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
+            await this.$root.readingList.updateFromUserDetails();
+        }
+    },
     components: {
-        Serie
+        Serie, SignInForm
     }
 }
