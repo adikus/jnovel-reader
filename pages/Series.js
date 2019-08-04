@@ -11,8 +11,8 @@ export default {
             <router-link to="/series/reading-list" class="border-b-4 hover:border-blue-700 px-2 sm:mr-10" :class="{'border-transparent': !isFilteredReadingList, 'border-blue-700': isFilteredReadingList}">
                 Reading&nbsp;list
             </router-link>
-            <div class="w-full flex-grow"></div>
-            <input v-model="search" class="flex-shrink shadow appearance-none border rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" id="series-search" type="text" placeholder="Search">
+            <div class="w-full flex-1"></div>
+            <input v-model="search" class="flex-shrink min-w-0 shadow appearance-none border rounded py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2" id="series-search" type="text" placeholder="Search">
         </div>
         
         <div class="flex content-center flex-wrap">
