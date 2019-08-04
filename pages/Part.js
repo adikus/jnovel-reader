@@ -78,13 +78,11 @@ export default {
 
         nextPartId() {
             let nextPart = (this.sortedSerieParts || []).filter(part => part.partNumber - 1 === this.part.partNumber)[0];
-            console.log(nextPart, nextPart && nextPart.id);
             return nextPart && nextPart.id;
         },
 
         previousPartId() {
             let previousPart = (this.sortedSerieParts || []).filter(part => part.partNumber + 1 === this.part.partNumber)[0];
-            console.log(previousPart, previousPart && previousPart.id);
             return  previousPart && previousPart.id;
         }
     },
@@ -117,7 +115,6 @@ export default {
 
         async loadVolumes() {
             let partsResponse = await this.$root.api.loadSerieParts(this.$route.params.serieId);
-            console.log(partsResponse.data);
             return partsResponse.data;
         },
 
@@ -137,13 +134,17 @@ export default {
         },
 
         showFooterSmart() {
-            let delta = new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
-            setTimeout(() => { this.showFooter = true }, 10);
+            let delta = this.$root.sharedStore.touchStart && new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
+            if(delta && delta < 100) {
+                setTimeout(() => { this.showFooter = true }, 10);
+            } else {
+                this.showFooter = true;
+            }
         },
 
         toggleFooterTouch() {
-            let delta = new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
-            if(delta < 100) {
+            let delta = this.$root.sharedStore.touchStart && new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
+            if(delta && delta < 100) {
                 this.showFooter = !this.showFooter;
             }
         }
