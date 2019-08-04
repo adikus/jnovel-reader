@@ -14,7 +14,7 @@
     <script src="https://unpkg.com/axios@^0.19.0/dist/axios.min.js"></script>
 </head>
 <body class="bg-blue-100 h-full">
-<div id="app" class="h-full flex flex-col">
+<div id="app" class="h-full flex flex-col" @touchstart="sharedStore.touchStart = new Date()">
     <navigation></navigation>
     <div v-cloak class="container mx-auto bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" v-show="sharedStore.alert" role="alert">
         {{sharedStore.alert}}

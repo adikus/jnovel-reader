@@ -7,7 +7,7 @@ export default {
         
         <sign-in-form v-show="showSignInForm" @signed-in="loadPartData" class="mt-4 flex-1"></sign-in-form>
         
-        <div v-html="partData" v-show="partData" id="part-data" class="px-2 py-4 bg-white flex-1"></div>
+        <div v-html="partData" v-show="partData" @click="toggleFooterTouch" id="part-data" class="px-2 py-4 bg-white flex-1"></div>
         
         <div v-show="!showSignInForm && !partData" class="flex-1 w-full"></div>
         
@@ -15,11 +15,12 @@ export default {
             <div 
                 class="bg-blue-700 p-4 flex" 
                 :class="{'opacity-0': !showFooter && partData}" 
-                @mouseover="showFooter = true" 
+                @mouseover="showFooterSmart" 
                 @mouseleave="showFooter = false"
                 style="transition-property: opacity; transition-duration: 200ms"
             >
                 <router-link 
+                    v-if="showFooter"
                     v-show="previousPartId !== undefined" 
                     :to="'/series/' + part.serieId + '/part/' + previousPartId" 
                     class="flex-shrink text-left block lg:inline-block lg:mt-0 text-blue-200 hover:text-white"
@@ -28,6 +29,7 @@ export default {
                 </router-link>
                 <div class="flex-grow">&nbsp;</div>
                 <router-link 
+                    v-if="showFooter"
                     v-show="nextPartId !== undefined" 
                     :to="'/series/' + part.serieId + '/part/' + nextPartId" 
                     class="flex-shrink text-right block lg:inline-block lg:mt-0 text-blue-200 hover:text-white"
@@ -132,6 +134,18 @@ export default {
 
             this.$root.sharedStore.hideAlert();
             this.showSignInForm = false;
+        },
+
+        showFooterSmart() {
+            let delta = new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
+            setTimeout(() => { this.showFooter = true }, 10);
+        },
+
+        toggleFooterTouch() {
+            let delta = new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
+            if(delta < 100) {
+                this.showFooter = !this.showFooter;
+            }
         }
     },
     components: {
