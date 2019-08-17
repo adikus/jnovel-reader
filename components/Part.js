@@ -29,17 +29,17 @@ export default {
                 </p>
             </div>
             <div style="background-clip: content-box" class="h-12 bg-blue-300 px-2 w-full absolute bottom-0 left-0 flex items-center justify-end">
-                <div class="mr-1 bg-yellow-500 rounded px-2 py-1 font-semibold" v-show="isReading">Reading</div>
-                <div class="mr-1 bg-green-500 rounded px-2 py-1 font-semibold" v-show="hasRead">Read</div>
-                <div class="mr-1 bg-blue-700 rounded px-2 py-1 font-semibold text-white" v-show="part.preview">Preview</div>
-                <div class="mr-1 bg-red-500 rounded px-2 py-1 font-semibold text-white" v-show="part.expired">Expired</div>
-                <div @click="markAsRead" v-show="!hasRead && signedIn" class="cursor-pointer bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-4 border border-blue-300 hover:border-blue-500 rounded mx-2">
+                <div class="mr-1 bg-yellow-500 rounded px-2 py-1 mr-2 font-semibold" v-show="isReading">Reading</div>
+                <div class="mr-1 bg-green-500 rounded px-2 py-1 mr-2 font-semibold" v-show="hasRead">Read</div>
+                <div class="mr-1 bg-blue-700 rounded px-2 py-1 mr-2 font-semibold text-white" v-show="part.preview">Preview</div>
+                <div class="mr-1 bg-red-500 rounded px-2 py-1 mr-2 font-semibold text-white" v-show="part.expired">Expired</div>
+                <div @click="markAsRead" v-show="!hasRead && signedIn" class="cursor-pointer bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-3 border border-blue-300 hover:border-blue-500 rounded mr-2">
                     Mark as read
                 </div>
-                <div @click="markAsUnread" v-show="hasRead && signedIn" class="cursor-pointer bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-4 border border-blue-300 hover:border-blue-500 rounded mx-2">
+                <div @click="markAsUnread" v-show="hasRead && signedIn" class="cursor-pointer bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-3 border border-blue-300 hover:border-blue-500 rounded mr-2">
                     Mark as unread
                 </div>
-                <router-link :to="linkToPart" class="bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-4 border border-blue-300 hover:border-blue-500 rounded mx-2">
+                <router-link :to="linkToPart" class="bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-3 border border-blue-300 hover:border-blue-500 rounded mr-2">
                     Go to part
                 </router-link>
             </div>
