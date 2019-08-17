@@ -17,10 +17,12 @@ export default {
         threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
         let params = {
             filter: {
-                where: { and: [{expired: false}, {or: [
-                        {expirationDate: {gt: new Date()}},
-                        {created: {gt: threeMonthsAgo}}
-                    ]}]},
+                where: {
+                    and: [
+                        {expired: false},
+                        {or: [{expirationDate: {gt: new Date()}}, {created: {gt: threeMonthsAgo}}]}
+                    ]
+                },
                 order: "launchDate DESC"
             }
         };

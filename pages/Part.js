@@ -45,7 +45,6 @@ export default {
   `,
     data() {
         return {
-            partId: null,
             part: {},
             partData: "",
             showSignInForm: false,
@@ -95,11 +94,9 @@ export default {
             let partId = this.$route.params.id;
             if(partId === "latest") {
                 this.part = await this.findLatestPart();
-                this.partId = this.part.id;
             } else {
                 let partResponse = await this.$root.api.loadPart(this.$route.params.id);
                 this.part = partResponse.data;
-                this.partId = this.part.id;
             }
 
             try {
@@ -107,8 +104,10 @@ export default {
             } catch(error) {
                 if(error.response.data.error.message === 'You cannot access this content') {
                     this.$root.sharedStore.setAlert('You must sign in to access this part');
+                    this.showSignInForm = true;
+                } else {
+                    this.$root.sharedStore.setAlert(error.response.data.error.message);
                 }
-                this.showSignInForm = true;
             }
             window.scrollTo(0, 0);
         },
@@ -126,7 +125,7 @@ export default {
         },
 
         async loadPartData() {
-            let partDataResponse = await this.$root.api.loadPartData(this.partId);
+            let partDataResponse = await this.$root.api.loadPartData(this.part.id);
             this.partData = partDataResponse.data.dataHTML;
 
             this.$root.sharedStore.hideAlert();
