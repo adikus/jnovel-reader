@@ -46,9 +46,9 @@ export default {
         localStorage.setItem('preferredFilter', this.preferredFilter);
     },
     saveReadingDirection(horizontal) {
-        localStorage.setItem('preferredHorizontalReadingDirection', horizontal);
+        localStorage.setItem('preferredHorizontalReadingDirection', horizontal.toString());
     },
     retrieveReadingDirection() {
-        return localStorage.preferredHorizontalReadingDirection;
+        return localStorage.preferredHorizontalReadingDirection === "true";
     }
 };
