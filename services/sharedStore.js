@@ -3,6 +3,9 @@ export default {
 
     user: {},
 
+    series: [],
+    feed: [],
+
     preferredFilter: 'all',
 
     setAlert(message) {

@@ -25,7 +25,6 @@ export default {
   `,
     data() {
         return {
-            series: [],
             filter: 'all',
             search: ''
         }
@@ -33,15 +32,6 @@ export default {
     async created() {
         this.filter = this.$route.params.filter || this.$root.sharedStore.preferredFilter;
         this.$root.sharedStore.hideAlert();
-
-        let response = await this.$root.api.loadSeries();
-        this.series.push.apply(this.series, response.data);
-
-        if(this.$root.isUserAuthValid){
-            let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
-            this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
-            await this.$root.readingList.updateFromUserDetails();
-        }
     },
     watch: {
         $route(to, _from) {
@@ -67,9 +57,9 @@ export default {
         filteredSeries() {
             let filteredSeries = [];
             if(this.isFilteredAll) {
-                filteredSeries = this.series;
+                filteredSeries = this.$root.sharedStore.series;
             } else if(this.isFilteredReadingList) {
-                filteredSeries = this.series.filter((serie) => this.$root.readingList.isReadingSerie(serie));
+                filteredSeries = this.$root.sharedStore.series.filter((serie) => this.$root.readingList.isReadingSerie(serie));
             }
 
             if(this.search && this.search.length > 0)
@@ -79,10 +69,8 @@ export default {
         }
     },
     methods: {
-        async loadReadingList() {
-            let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
-            this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
-            await this.$root.readingList.updateFromUserDetails();
+        loadReadingList() {
+            this.$root.loadUserDetails();
         }
     },
     components: {

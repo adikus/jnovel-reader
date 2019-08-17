@@ -37,6 +37,10 @@ new Vue({
         if(this.$route.path === '/') {
             router.push('/series');
         }
+
+        this.loadSeries();
+        this.loadFeed();
+        this.loadUserDetails();
     },
     computed: {
         isUserAuthValid() {
@@ -45,5 +49,24 @@ new Vue({
                 this.sharedStore.user.auth.authToken && this.sharedStore.user.auth.authExpiresAt &&
                 new Date(this.sharedStore.user.auth.authExpiresAt).getTime() > now.getTime();
         },
+    },
+    methods: {
+        async loadSeries() {
+            let response = await this.api.loadSeries();
+            this.sharedStore.series.push.apply(this.sharedStore.series, response.data);
+        },
+
+        async loadFeed() {
+            let response = await this.$root.api.loadFeed();
+            this.sharedStore.feed.push.apply(this.sharedStore.feed, response.data);
+        },
+
+        async loadUserDetails() {
+            if(this.isUserAuthValid) {
+                let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
+                this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
+                await this.readingList.updateFromUserDetails();
+            }
+        }
     }
 }).$mount('#app');
