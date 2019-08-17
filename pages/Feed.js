@@ -62,16 +62,14 @@ export default {
                 filteredParts = this.$root.sharedStore.feed.filter((part) => this.$root.readingList.isPartInFeed(part));
             }
 
-            if(this.search && this.search.length > 0)
-                filteredParts = filteredParts.filter((part) => part.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+            if(this.search && this.search.length > 0) {
+                filteredParts = this.$root.fuseSearchFilter(filteredParts, this.search);
+            }
 
             return filteredParts.slice(0, 51);
         }
     },
     methods: {
-        async fetchParts() {
-
-        },
         async loadReadingList() {
             let userDetailsResponse = await this.$root.api.loadUserDetails(this.$root.sharedStore.user.userId);
             this.$root.sharedStore.setUserDetails(userDetailsResponse.data);

@@ -52,7 +52,7 @@ export default {
             return parts[0];
         },
         latestPart() {
-            let parts = this.$root.sharedStore.feed.filter(part => part.serieId === this.serie.id);
+            let parts = this.$root.sharedStore.feed.filter(part => part.serieId === this.serie.id && !part.preview);
             parts.sort((partA, partB) => partB.partNumber - partA.partNumber);
             return parts[0];
         },

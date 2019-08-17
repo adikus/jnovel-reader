@@ -62,8 +62,9 @@ export default {
                 filteredSeries = this.$root.sharedStore.series.filter((serie) => this.$root.readingList.isReadingSerie(serie));
             }
 
-            if(this.search && this.search.length > 0)
-            filteredSeries = filteredSeries.filter((serie) => serie.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+            if(this.search && this.search.length > 0) {
+                filteredSeries = this.$root.fuseSearchFilter(filteredSeries, this.search);
+            }
 
             return filteredSeries;
         }

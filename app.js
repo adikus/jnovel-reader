@@ -67,6 +67,28 @@ new Vue({
                 this.$root.sharedStore.setUserDetails(userDetailsResponse.data);
                 await this.readingList.updateFromUserDetails();
             }
+        },
+
+        fuseSearchFilter(items, search) {
+            const options = {
+                shouldSort: true,
+                threshold: 0.3,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 1,
+                keys: [
+                    "title",
+                    "titleShort",
+                    "titleOriginal",
+                    "author",
+                    "illustrator",
+                    "translator",
+                    "editor"
+                ]
+            };
+            let fuse = new Fuse(items, options);
+            return fuse.search(search);
         }
     }
 }).$mount('#app');
