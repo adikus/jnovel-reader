@@ -1,1 +1,5 @@
 [v-cloak] { display: none; }
+
+div.reading-horizontal {
+    max-height: calc(100vh - 68px);
+}

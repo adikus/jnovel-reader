@@ -12,6 +12,22 @@
     text-align: center;
 }
 
+#part-data span.breakpoint-clearfix::before {
+    display: block;
+    content: '';
+    margin-top: -1.5em;
+}
+
 #part-data img {
     margin: 1em auto;
+}
+
+#part-data section.reading-spacer {
+    height: 100vh;
+    width: 100%;
+}
+
+div.reading-horizontal #part-data img {
+    max-height: calc(100vh - 200px);
+    margin: 0 auto;
 }
