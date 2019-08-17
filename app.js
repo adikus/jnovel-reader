@@ -71,7 +71,7 @@ new Vue({
 
         fuseSearchFilter(items, search) {
             const options = {
-                shouldSort: true,
+                shouldSort: false,
                 threshold: 0.3,
                 location: 0,
                 distance: 100,
@@ -84,7 +84,8 @@ new Vue({
                     "author",
                     "illustrator",
                     "translator",
-                    "editor"
+                    "editor",
+                    "tags"
                 ]
             };
             let fuse = new Fuse(items, options);
