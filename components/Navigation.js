@@ -4,7 +4,7 @@ export default {
         <div class="container mx-auto flex items-center justify-between flex-wrap px-2 py-4">
             <router-link to="/series" class="flex items-center flex-shrink-0 text-white">
                 <span class="font-serif leading-none text-4xl mr-4">J</span>
-                <span class="font-semibold text-xl tracking-tight">J-Novel Unofficial Reader App</span>
+                <span class="font-semibold text-xl tracking-tight">J-Novel Club Unofficial Reader App</span>
             </router-link>
             <div class="block lg:hidden">
                 <button @click="toggleMenuItems" class="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white focus:outline-none cursor-pointer">

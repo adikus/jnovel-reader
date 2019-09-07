@@ -1,0 +1,17 @@
+{
+  "name": "J-Novel Club Unofficial Reader",
+  "short_name": "J-Novel Reader",
+  "theme_color": "#2B6BB0",
+  "background_color": "#EBF8FF",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "http://192.168.0.179:63341/jnovel-reader",
+  "description": "An Unofficial App to Read novels from J-Novel Club",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "http://192.168.0.179:63341/jnovel-reader/images/logo.png",
+      "sizes": "104x98"
+    }
+  ]
+}
