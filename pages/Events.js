@@ -26,6 +26,8 @@ export default {
     async created() {
         this.filter = this.$route.params.filter || this.$root.sharedStore.preferredFilter;
         this.$root.sharedStore.hideAlert();
+        this.$root.noSleep.disable();
+        console.log('NoSleep disabled');
     },
     watch: {
         $route(to, _from) {

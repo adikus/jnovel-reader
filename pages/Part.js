@@ -81,6 +81,8 @@ export default {
     created() {
         this.horizontalReading = this.$root.sharedStore.retrieveReadingDirection();
         this.initPart();
+        this.$root.noSleep.enable();
+        console.log('NoSleep enabled');
     },
     mounted() {
         window.addEventListener('scroll', () => {

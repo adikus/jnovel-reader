@@ -32,7 +32,8 @@ new Vue({
         api,
         sharedStore,
         readingList: new ReadingList(sharedStore, api),
-        eventParser: new EventParser(sharedStore)
+        eventParser: new EventParser(sharedStore),
+        noSleep: new NoSleep()
     },
     router,
     created() {
