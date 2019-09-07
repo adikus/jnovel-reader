@@ -3,17 +3,21 @@ import Navigation from "./components/Navigation.js"
 import Feed from "./pages/Feed.js";
 import Part from "./pages/Part.js";
 import Series from "./pages/Series.js"
+import Events from "./pages/Events.js"
 
 import api from "./services/api.js"
 import sharedStore from "./services/sharedStore.js";
 import ReadingList from "./services/ReadingList.js";
+import EventParser from "./services/EventParser.js";
 
 const routes = [
     { path: '/series', component: Series },
     { path: '/series/:filter', component: Series },
     { path: '/series/:serieId/part/:id', component: Part },
     { path: '/feed', component: Feed },
-    { path: '/feed/:filter', component: Feed }
+    { path: '/feed/:filter', component: Feed },
+    { path: '/coming-up', component: Events },
+    { path: '/coming-up/:filter', component: Events }
 ];
 
 const router = new VueRouter({
@@ -27,7 +31,8 @@ new Vue({
     data: {
         api,
         sharedStore,
-        readingList: new ReadingList(sharedStore, api)
+        readingList: new ReadingList(sharedStore, api),
+        eventParser: new EventParser(sharedStore)
     },
     router,
     created() {
@@ -40,6 +45,7 @@ new Vue({
 
         this.loadSeries();
         this.loadFeed();
+        this.loadEvents();
         this.loadUserDetails();
     },
     computed: {
@@ -59,6 +65,12 @@ new Vue({
         async loadFeed() {
             let response = await this.$root.api.loadFeed();
             this.sharedStore.feed.push.apply(this.sharedStore.feed, response.data);
+        },
+
+        async loadEvents() {
+            let response = await this.$root.api.loadEvents();
+            let predicate = event => event.details.toLowerCase().indexOf('release of part') > -1;
+            this.sharedStore.events.push.apply(this.sharedStore.events, response.data.filter(predicate));
         },
 
         async loadUserDetails() {

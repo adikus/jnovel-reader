@@ -41,6 +41,19 @@ export default {
         return apiAxiosInstance.get(`https://api.j-novel.club/api/parts/findOne?filter={"where":{"id":"${partId}"}}`);
     },
 
+    loadEvents() {
+        let params = {
+            filter: {
+                where: {
+                    date: { gt: new Date() },
+                    seriesType: 'Novel'
+                },
+                order: "date ASC"
+            }
+        };
+        return apiAxiosInstance.get(`https://api.j-novel.club/api/events`, { params });
+    },
+
     signIn(email, password) {
         return apiAxiosInstance.post(`https://api.j-novel.club/api/users/login?include=user`, {email, password});
     },

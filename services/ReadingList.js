@@ -17,6 +17,8 @@ class ReadingList {
     }
 
     isPartInFeed(part) {
+        if(!part) { return false }
+
         let readingSeries = this.isReadingSerie({id: part.serieId});
         if(!readingSeries) return false;
 

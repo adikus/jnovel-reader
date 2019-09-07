@@ -5,6 +5,7 @@ export default {
 
     series: [],
     feed: [],
+    events: [],
 
     preferredFilter: 'all',
 
