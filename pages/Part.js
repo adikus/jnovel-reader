@@ -46,7 +46,7 @@ export default {
                 >
                     < Previous Page 
                 </div>
-                <div class="flex-shrink mx-10">
+                <div class="flex-shrink mx-4 md:mx-10">
                     <div 
                         class="text-center text-blue-200 hover:text-white cursor-pointer" 
                         @click="showSettings = true"
