@@ -31,13 +31,7 @@ export default {
     },
     watch: {
         $route(to, _from) {
-            if(to.params.filter) {
-                this.$root.sharedStore.preferredFilter = to.params.filter;
-                this.$root.sharedStore.savePreferences();
-                this.filter = to.params.filter;
-            } else {
-                this.filter = this.$root.sharedStore.preferredFilter || 'all';
-            }
+            this.filter = this.$root.handleFilterChange(to.params.filter);
         }
     },
     computed: {

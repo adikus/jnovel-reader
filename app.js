@@ -103,6 +103,16 @@ new Vue({
             };
             let fuse = new Fuse(items, options);
             return fuse.search(search);
+        },
+
+        handleFilterChange(filter) {
+            if(filter) {
+                this.$root.sharedStore.preferredFilter = filter;
+                this.$root.sharedStore.savePreferences();
+                return filter;
+            } else {
+                return filter || 'all';
+            }
         }
     }
 }).$mount('#app');
