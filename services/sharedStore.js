@@ -46,10 +46,16 @@ export default {
     savePreferences() {
         localStorage.setItem('preferredFilter', this.preferredFilter);
     },
-    saveReadingDirection(horizontal) {
-        localStorage.setItem('preferredHorizontalReadingDirection', horizontal.toString());
+    saveSettings(settings) {
+        localStorage.setItem('settings', JSON.stringify(settings));
     },
-    retrieveReadingDirection() {
-        return localStorage.preferredHorizontalReadingDirection === "true";
+    retrieveSettings() {
+        return (localStorage.settings && JSON.parse(localStorage.settings)) || {
+            appearance: 'light',
+            fontSize: 'medium',
+            readingDirection: 'vertical',
+            textAlignment: 'left',
+            font: 'Open Sans'
+        };
     }
 };

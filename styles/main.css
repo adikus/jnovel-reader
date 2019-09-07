@@ -3,3 +3,12 @@
 div.reading-horizontal {
     max-height: calc(100vh - 68px);
 }
+
+input[type="radio"]:checked + label span {
+    background-color: #2b6cb0; /*bg-blue-700*/
+    box-shadow: 0px 0px 0px 2px white inset;
+}
+
+input[type="radio"]:checked + label{
+    color: #2b6cb0; /*text-blue-700*/
+}

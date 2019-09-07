@@ -32,3 +32,24 @@ div.reading-horizontal #part-data img {
     max-height: calc(100vh - 200px);
     margin: 0 auto;
 }
+
+
+#part-data.font-extraSmall {
+    font-size: 12px;
+}
+
+#part-data.font-small {
+    font-size: 14px;
+}
+
+#part-data.font-medium {
+    font-size: 16px;
+}
+
+#part-data.font-large {
+    font-size: 18px;
+}
+
+#part-data.font-extraLarge {
+    font-size: 20px;
+}

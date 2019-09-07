@@ -1,4 +1,5 @@
 import SignInForm from "../components/SignInForm.js"
+import SettingsModal from "../components/SettingsModal.js"
 
 export default {
     template: `
@@ -7,14 +8,24 @@ export default {
         
         <sign-in-form v-show="showSignInForm" @signed-in="loadPartData" class="mt-4 flex-1"></sign-in-form>
         
-        <div class="w-full h-3 bg-white flex-shrink"></div>
-        <div v-html="adjustedPartData" v-show="partData" @click="toggleFooterTouch" id="part-data" class="px-2 bg-white flex-1 max-h-full overflow-hidden"></div>
+        <div class="w-full h-3 bg-white flex-shrink" :class="[backgroundColorClass]"></div>
+        <div 
+            v-html="adjustedPartData" 
+            v-show="partData" 
+            @click="toggleFooterTouch" 
+            id="part-data" 
+            class="px-2 flex-1 max-h-full overflow-hidden"
+            :class="[backgroundColorClass, textColorClass, fontSizeClass, textAlignmentClass]"
+            :style="{ 'font-family': settings.font }"
+        ></div>
         
         <div v-show="!showSignInForm && !partData" class="flex-1 w-full"></div>
         
+        <settings-modal :open="showSettings" :settings="settings" @close="showSettings=false" @change="changeSettings"></settings-modal>
+        
         <footer class="w-full sticky bottom-0">
-            <div 
-                class="bg-blue-700 p-4 flex" 
+            <div
+                class="bg-blue-700 p-4 flex justify-center" 
                 :class="{'opacity-0': !showFooter && partData && !horizontalReading}" 
                 @mouseover="showFooterSmart" 
                 @mouseleave="showFooter = false"
@@ -35,12 +46,15 @@ export default {
                 >
                     < Previous Page 
                 </div>
-                <div class="flex-grow">
+                <div class="flex-shrink mx-10">
                     <div 
                         class="text-center text-blue-200 hover:text-white cursor-pointer" 
-                        @click="changeReadingDirection"
+                        @click="showSettings = true"
                     >
-                        Direction
+                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <title>Settings</title>
+                            <path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/>
+                        </svg>
                     </div>
                 </div>
                 <router-link 
@@ -49,14 +63,14 @@ export default {
                     :to="'/series/' + part.serieId + '/part/' + nextPartId" 
                     class="flex-shrink text-right block lg:inline-block lg:mt-0 text-blue-200 hover:text-white"
                 >
-                    Next Part > 
+                    Next Part > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </router-link>
                 <div
                     v-if="horizontalReading && !onLastPage" 
                     class="flex-shrink text-left block lg:inline-block lg:mt-0 text-blue-200 hover:text-white cursor-pointer"
                     @click="goToNextPage"
                 >
-                    Next Page >
+                    Next Page > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
             <div class="w-full bg-white" style="height: 5px" v-show="partData">
@@ -70,16 +84,19 @@ export default {
             part: {},
             partData: "",
             showSignInForm: false,
+            showSettings: false,
             showFooter: true,
             progress: 0,
             volumes: [],
             horizontalReading: false,
             horizontalReadingBreakpoints: [],
-            horizontalReadingPage: 0
+            horizontalReadingPage: 0,
+            settings: {}
         }
     },
     created() {
-        this.horizontalReading = this.$root.sharedStore.retrieveReadingDirection();
+        this.settings = this.$root.sharedStore.retrieveSettings();
+        this.horizontalReading = this.settings.readingDirection === 'horizontal';
         this.initPart();
         this.$root.noSleep.enable();
         console.log('NoSleep enabled');
@@ -133,6 +150,30 @@ export default {
 
         onLastPage() {
             return this.horizontalReadingBreakpoints.length - 1 <= this.horizontalReadingPage;
+        },
+
+        backgroundColorClass() {
+            return {
+                'light': 'bg-white',
+                'lightLowContrast': 'bg-gray-100',
+                'dark': 'bg-gray-800'
+            }[this.settings.appearance]
+        },
+
+        textColorClass() {
+            return {
+                'light': 'text-gray-800',
+                'lightLowContrast': 'text-gray-700',
+                'dark': 'text-white'
+            }[this.settings.appearance]
+        },
+
+        fontSizeClass() {
+            return 'font-' + this.settings.fontSize;
+        },
+
+        textAlignmentClass() {
+            return 'text-' + this.settings.textAlignment;
         }
     },
     methods: {
@@ -181,14 +222,6 @@ export default {
             this.$root.sharedStore.hideAlert();
             this.showSignInForm = false;
 
-            if(this.horizontalReading) {
-                setTimeout(() => this.initHorizontalReading(), 100);
-            }
-        },
-
-        changeReadingDirection() {
-            this.horizontalReading = !this.horizontalReading;
-            this.$root.sharedStore.saveReadingDirection(this.horizontalReading);
             if(this.horizontalReading) {
                 setTimeout(() => this.initHorizontalReading(), 100);
             }
@@ -299,9 +332,20 @@ export default {
             if(delta && delta < 100) {
                 this.showFooter = !this.showFooter;
             }
+        },
+        changeSettings(newSettings) {
+            let wasHorizontalReading = this.settings.readingDirection === 'horizontal';
+
+            this.settings = Object.assign({}, this.settings, newSettings );
+            this.$root.sharedStore.saveSettings(this.settings);
+            this.horizontalReading = this.settings.readingDirection === 'horizontal';
+
+            if(this.horizontalReading && !wasHorizontalReading) {
+                setTimeout(() => this.initHorizontalReading(), 100);
+            }
         }
     },
     components: {
-        SignInForm
+        SignInForm, SettingsModal
     }
 }
