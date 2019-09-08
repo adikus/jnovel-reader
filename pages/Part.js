@@ -185,6 +185,8 @@ export default {
             let partId = this.$route.params.id;
             if(partId === "latest") {
                 this.part = await this.findLatestPart();
+            } else if(partId === "preview") {
+                this.part = await this.findPreview();
             } else {
                 let partResponse = await this.$root.api.loadPart(this.$route.params.id);
                 this.part = partResponse.data;
@@ -212,6 +214,13 @@ export default {
             this.volumes.sort((volumeA, volumeB) => volumeB.volumeNumber - volumeA.volumeNumber);
             let parts = this.volumes[0].parts;
             parts.sort((partA, partB) => partB.partNumber - partA.partNumber);
+            return parts[0];
+        },
+
+        async findPreview() {
+            this.volumes.sort((volumeA, volumeB) => volumeA.volumeNumber - volumeB.volumeNumber);
+            let parts = this.volumes[0].parts.filter(part => part.preview);
+            parts.sort((partA, partB) => partA.partNumber - partB.partNumber);
             return parts[0];
         },
 

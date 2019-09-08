@@ -27,7 +27,9 @@ export default {
             </div>
             <div style="background-clip: content-box" class="h-12 bg-blue-300 px-2 w-full absolute bottom-0 left-0 flex items-center justify-end">
                 <div class="bg-yellow-500 rounded mr-2 px-2 py-1 font-semibold" v-show="isReading">Reading</div>
-                <div v-show="!firstPart && !latestPart" class="bg-orange-500 rounded mr-2 px-2 py-1 font-semibold">No available parts</div>
+                <router-link v-show="showPreview" :to="linkToPreview" class="bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-3 border border-blue-300 hover:border-blue-500 rounded mr-2">
+                    Preview
+                </router-link>
                 <router-link v-show="firstPart && !isReading" :to="linkToFirstPart" class="bg-blue-400 hover:bg-transparent text-gray-700 font-semibold hover:text-gray-800 py-2 px-3 border border-blue-300 hover:border-blue-500 rounded mr-2">
                     First available part
                 </router-link>
@@ -81,6 +83,14 @@ export default {
         },
         isReading() {
             return this.$root.readingList.readSeries[this.serie.id] && this.$root.readingList.readSeries[this.serie.id].max > 0.1;
+        },
+        showPreview() {
+            if(!this.firstPart) return true;
+
+            return this.firstPart.partNumber > 1;
+        },
+        linkToPreview() {
+            return '/series/' + this.serie.id + '/part/preview';
         }
     }
 }
