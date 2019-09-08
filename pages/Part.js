@@ -1,5 +1,6 @@
 import SignInForm from "../components/SignInForm.js"
 import SettingsModal from "../components/SettingsModal.js"
+import SeriePartList from "../components/SeriePartList.js"
 
 export default {
     template: `
@@ -22,11 +23,13 @@ export default {
         <div v-show="!showSignInForm && !partData" class="flex-1 w-full"></div>
         
         <settings-modal :open="showSettings" :settings="settings" @close="showSettings=false" @change="changeSettings"></settings-modal>
+        <serie-part-list :open="showPartList" :volumes="volumes" @close="showPartList=false"></serie-part-list>
         
         <footer class="w-full sticky bottom-0">
             <div
                 class="bg-blue-700 p-4 flex justify-center" 
-                :class="{'opacity-0': !showFooter && partData && !horizontalReading}" 
+                :class="{'opacity-0': !showFooter && partData && !horizontalReading}"
+                v-if="!showPartList && !showSettings"
                 @mouseover="showFooterSmart" 
                 @mouseleave="showFooter = false"
                 style="transition-property: opacity; transition-duration: 200ms"
@@ -46,7 +49,16 @@ export default {
                 >
                     < Previous Page 
                 </div>
-                <div class="flex-shrink mx-4 md:mx-10">
+                <div class="flex-shrink mx-4 md:mx-10 flex">
+                    <div 
+                        class="text-center text-blue-200 hover:text-white cursor-pointer mr-2" 
+                        @click="showPartList = true"
+                    >
+                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                            <title>Part List</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                        </svg>
+                    </div>
                     <div 
                         class="text-center text-blue-200 hover:text-white cursor-pointer" 
                         @click="showSettings = true"
@@ -85,6 +97,7 @@ export default {
             partData: "",
             showSignInForm: false,
             showSettings: false,
+            showPartList: false,
             showFooter: true,
             progress: 0,
             volumes: [],
@@ -178,6 +191,7 @@ export default {
     },
     methods: {
         async initPart() {
+            this.showPartList = false;
             this.partData = "";
             this.$root.sharedStore.hideAlert();
             this.volumes = await this.loadVolumes();
@@ -328,6 +342,8 @@ export default {
         },
 
         showFooterSmart() {
+            if(this.showPartList || this.showSettings) { return; }
+
             let delta = this.$root.sharedStore.touchStart && new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
             if(delta && delta < 100) {
                 setTimeout(() => { this.showFooter = true }, 10);
@@ -337,6 +353,11 @@ export default {
         },
 
         toggleFooterTouch() {
+            if(this.showPartList || this.showSettings) {
+                this.showFooter = false;
+                return;
+            }
+
             let delta = this.$root.sharedStore.touchStart && new Date().getTime() - this.$root.sharedStore.touchStart.getTime();
             if(delta && delta < 100) {
                 this.showFooter = !this.showFooter;
@@ -355,6 +376,6 @@ export default {
         }
     },
     components: {
-        SignInForm, SettingsModal
+        SignInForm, SettingsModal, SeriePartList
     }
 }
