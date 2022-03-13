@@ -57,5 +57,11 @@ export default {
             textAlignment: 'left',
             font: 'Open Sans'
         };
+    },
+    saveLastPartHeight(height) {
+        localStorage.setItem('lastPartHeight', height);
+    },
+    retrieveLastPartHeight() {
+        return localStorage.lastPartHeight && parseInt(localStorage.lastPartHeight);
     }
 };

@@ -11,13 +11,13 @@ export default {
         
         <div class="w-full h-3 bg-white flex-shrink" :class="[backgroundColorClass]"></div>
         <div 
+            ref="partData"
             v-html="adjustedPartData" 
-            v-show="partData" 
-            @click="toggleFooterTouch" 
-            id="part-data" 
+            @click="toggleFooterTouch"
+            id="part-data"
             class="px-2 flex-1 max-h-full overflow-hidden"
             :class="[backgroundColorClass, textColorClass, fontSizeClass, textAlignmentClass]"
-            :style="{ 'font-family': settings.font }"
+            :style="{ 'font-family': settings.font, 'min-height': minPartHeight + 'px' }"
         ></div>
         
         <div v-show="!showSignInForm && !partData" class="flex-1 w-full"></div>
@@ -123,7 +123,9 @@ export default {
                 this.progress = scrollPos / (docHeight - winHeight);
                 this.showFooter = this.progress > 0.99;
             }
-        })
+        });
+
+        window.history.scrollRestoration = 'auto'; // Allow keeping scroll position on page refresh
     },
     watch: {
         $route(to, _from) {
@@ -187,6 +189,12 @@ export default {
 
         textAlignmentClass() {
             return 'text-' + this.settings.textAlignment;
+        },
+
+        minPartHeight() {
+            if(this.partData) return 0;
+
+            return this.$root.sharedStore.retrieveLastPartHeight() || 1000;
         }
     },
     methods: {
@@ -216,7 +224,6 @@ export default {
                     this.$root.sharedStore.setAlert(error.response.data.error.message);
                 }
             }
-            window.scrollTo(0, 0);
         },
 
         async loadVolumes() {
@@ -245,7 +252,7 @@ export default {
             this.$root.sharedStore.hideAlert();
             this.showSignInForm = false;
 
-            if(window.scrollCallback) setTimeout(() => window.scrollCallback(), 50);
+            setTimeout(() => {  this.$root.sharedStore.saveLastPartHeight(this.$refs.partData.clientHeight) }, 50);
 
             if(this.horizontalReading) {
                 setTimeout(() => this.initHorizontalReading(), 100);
@@ -253,7 +260,7 @@ export default {
         },
 
         initHorizontalReading() {
-           let partDataContainer = document.getElementById('part-data');
+           let partDataContainer = this.$refs.partData;
            partDataContainer.scrollTop = 0;
            this.horizontalReadingPage = 0;
            let breakpoints = [];
@@ -298,7 +305,7 @@ export default {
         },
 
         updateHorizontalReadingVisibility() {
-            let partDataContainer = document.getElementById('part-data');
+            let partDataContainer = this.$refs.partData;
             for(let outerTag of partDataContainer.children) {
                 let innerTags = [outerTag];
                 if(outerTag.tagName.toLowerCase() === 'p') {
@@ -336,7 +343,7 @@ export default {
         },
 
         updateHorizontalReadingScrollBar() {
-            let partDataContainer = document.getElementById('part-data');
+            let partDataContainer = this.$refs.partData;
             let scrollHeight = partDataContainer.scrollHeight;
             let scrollTop = partDataContainer.scrollTop;
             let height = partDataContainer.clientHeight;

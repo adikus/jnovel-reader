@@ -23,12 +23,9 @@ const routes = [
 const router = new VueRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
-        if (to.path.includes('/part/') && savedPosition) {
-            return new Promise((resolve, _reject) => {
-                window.scrollCallback = () => {
-                    resolve({ top: savedPosition.y });
-                }
-            });
+        if (to.path.includes('/part/') && to.path !== from.path) {
+            window.scrollTo({ top: 0 }); // Reset scroll position when navigating between parts
+            return { top: 0 };
         } else {
             return savedPosition;
         }
