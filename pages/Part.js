@@ -245,6 +245,8 @@ export default {
             this.$root.sharedStore.hideAlert();
             this.showSignInForm = false;
 
+            if(window.scrollCallback) setTimeout(() => window.scrollCallback(), 50);
+
             if(this.horizontalReading) {
                 setTimeout(() => this.initHorizontalReading(), 100);
             }

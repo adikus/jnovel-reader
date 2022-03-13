@@ -21,7 +21,18 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    routes
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        if (to.path.includes('/part/') && savedPosition) {
+            return new Promise((resolve, _reject) => {
+                window.scrollCallback = () => {
+                    resolve({ top: savedPosition.y });
+                }
+            });
+        } else {
+            return savedPosition;
+        }
+    }
 });
 
 new Vue({
